@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Istwa Kè — Feyton Kreyòl</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <!-- Isit la nou konekte dosye CSS la -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ═══════════════════ HOME ═══════════════════ -->
+<div id="home">
+  <div class="home-hero">
+    <div class="home-badge">📖 Koleksyon Feyton</div>
+    <h1 class="home-title">Istwa Kè</h1>
+    <p class="home-sub">Lanmou · Dram · Mistè — pa episòd</p>
+  </div>
+  <div class="cards-wrap" id="cards-wrap"></div>
+</div>
+
+<!-- ═══════════════════ STORY (ep list) ═══════════════════ -->
+<div id="story-view">
+  <div class="story-hero" id="story-hero"></div>
+  <div class="ep-list-wrap" id="ep-list-wrap"></div>
+</div>
+
+<!-- ═══════════════════ EPISODE READER ═══════════════════ -->
+<div id="episode-view">
+  <div class="ep-topbar" id="ep-topbar"></div>
+  <div class="ep-content-wrap" id="ep-content-wrap"></div>
+</div>
+
+<script>
+const DATA = [
+  {
+    id: 0,
+    titre: "Lanmou Nan Lapli",
+    genre: "Romantik 💕",
+    cover: "🌧️",
+    bg: "radial-gradient(ellipse at top, #2d0a4a 0%, #080608 65%)",
+    accent: "#c084fc",
+    accentDim: "#c084fc22",
+    accentBorder: "#c084fc44",
+    textOnAccent: "#1a0533",
+    description: "Yon sekrè ki te kache pandan 10 ane, yon rankont anba lapli ki chanje tout bagay...",
+    episodes: [
+      {
+        num: 1, titre: "Jou Yo Te Kontre",
+        contenu: [
+          "Lapli a t ap tonbe tankou yon ridèo sou vil Pòtoprens lè Naomi soti kouri soti nan travay li. Souli li te mouye, valiz li te mouye, men kè li te pi mouye toujou — paske jodi a te dezyèm anivèsè mò manman l.",
+          "Li pa t wè kamyon an k ap vini. Li pa t wè men ki kenbe l anvan li tonbe.",
+          "Men li te santi chalè.",
+          "\"Ou byen?\" Yon vwa grav, pwòf tankou tanbou.",
+          "Li leve je l. Devan l te kanpe yon nonm — gran, po nwa tankou nuit, je l te klere tankou zetwal anba lapli a. Li te gen yon parapli nwa ki kouvri yo de.",
+          "Naomi vle di mèsi. Men mo yo pa soti. Paske nonm sa a... li te konnen figi sa a. Menm si 10 ane te pase.",
+          "\"Dòf?\" vwa li soti tankou yon chuchòtman.",
+          "Nonm nan fige. Parapli a prèske tonbe nan men l.",
+          "\"Naomi...\" li di, epi nan yon mo sèlman, tout pasé a te tounen prezans."
+        ]
+      },
+      {
+        num: 2, titre: "Sekrè Ki Kache",
+        contenu: [
+          "Yo pa pale pandan yon moman ki long lontan. Yo jis kanpe anba parapli a, lapli a ap chante tout otou yo, tankou syèl la te konnen sa kat je sa yo t ap di.",
+          "Se Dòf ki pale an premye.",
+          "\"Sa ou fè isit?\" li mande, vwa l ap eseye ret kalm men Naomi tande tranbleman an.",
+          "\"Mwen travay isit depi twa an.\" Naomi ranje tèt li, eseye parèt solid. \"Se ou k ap fè kisa isit la?\"",
+          "\"Mwen... mwen tounen.\" Li pa t bay plis esplikasyon.",
+          "Naomi vle mande: Pou ki sa? Eske se pou mwen? Men li konnen repons lan pa t ap sa li vle tande. Kidonk li di:",
+          "\"Mèsi pou parapli a.\" Li kòmanse mache.",
+          "\"Naomi.\" Vwa l rete l kòm si li te gen pwa ladan l.",
+          "Li vire gade. Je nwa sa yo ki te toujou fè kè l bat pi vit.",
+          "\"Mwen vle eksplike w.\" Dòf di, lapli a ap tonbe pi di toujou sou do li ki pa kouvri ankò.",
+          "Naomi gade l — mouye, bèl, tris — epi pou premye fwa depi 10 ane, li santi yon pòt nan kè l ki t ap fèmen, kòmanse louvri yon ti jan.",
+          "\"Demen,\" li reponn. \"Kafé Solèy. 9è.\"",
+          "Li vire do l. Men fwa sa a li pa kouri."
+        ]
+      },
+      {
+        num: 3, titre: "Verite Ki Fè Mal",
+        contenu: [
+          "Kafé Solèy te konn yo de. Se la yo te pran premye kafe ansanm, 12 ane de sa, lè yo te etidyan plen rèv.",
+          "Naomi rive 10 minit bonè. Li kòmande yon café au lait, li eseye kite men l sispann tranble.",
+          "Dòf rive pil lè. Li gen yon rad ble maren, chevèl li kout kounye a, men je l — je l toujou parèy.",
+          "Li chita devan l san mande pèmisyon.",
+          "\"Pourquoi ou ale konsa?\" Naomi mande dirèkteman. Pa bonjou, pa kijan ou ye. Jis sa a.",
+          "Dòf soufle. Li gade nan tas kafe a.",
+          "\"Manman m te malad. Kansè. Yo di l te gen 6 mwa.\" Li fè yon poz. \"Li te viv 3 ane.\"",
+          "Naomi santi yon bagay louvri nan pwatrin li. \"Ou pa t ka di m?\"",
+          "\"Ou t ap abandone rèv ou pou vin avè m.\" Je l leve, plante nan pa l. \"Mwen pa t ka kite w fè sa.\"",
+          "\"Se pa desizyon pa w pou fè sa!\" Naomi di, vwa l monte yon kran.",
+          "\"Mwen konnen.\" Li di tou dousman. \"Se pi gwo erè mwen nan lavi m.\"",
+          "Silans tonbe. Kafe a ap refwadi. Epi Naomi reyalize — li pa t janm sispann renmen nonm sa a. Li juste te aprann kache l."
+        ]
+      }
+    ]
+  },
+  {
+    id: 1,
+    titre: "Pitit Madanm Nan",
+    genre: "Dram Familyal 🔥",
+    cover: "🏠",
+    bg: "radial-gradient(ellipse at top, #2a0e00 0%, #080608 65%)",
+    accent: "#fb923c",
+    accentDim: "#fb923c1a",
+    accentBorder: "#fb923c33",
+    textOnAccent: "#1c0a00",
+    description: "Lè yon sèkrè fanmi eklate, tout moun reyalize lavi yo te bati sou manti...",
+    episodes: [
+      {
+        num: 1, titre: "Jou Antèman An",
+        contenu: [
+          "Pa gen jou ki pi mal pase jou ou antere manman w, epi yon fanm etranje parèt nan antèman an ap kriye pi fò pase tout moun.",
+          "Céliane gade fanm nan — jèn, bèl, grenn je vèt wè — epi li santi kè l pran yon frison li pa konprann.",
+          "\"Kilès li ye?\" li chuchote nan zòrèy frè l, Thierry.",
+          "Thierry ranje kravat li, evite je sè l. \"Mwen pa konnen.\"",
+          "Men Céliane wè jan men l ap tranble.",
+          "Apre sèvis la, fanm nan vini dwat jwenn yo. Li kenbe yon anvlòp blan nan men l.",
+          "\"Mwen regrèt dèy nou,\" li di, vwa l anfle ak doulè. \"Mwen rele Isabelle. Madan Claudette... te konnen m pèsonèlman.\"",
+          "Li ba Céliane anvlòp la epi li vire ale anvan yo ka poze yon kesyon.",
+          "Céliane louvri anvlòp la. Anndan — yon foto. Manman l ak yon ti bebe nan bra l. Yon ti bebe Céliane pa janm wè.",
+          "Epi dèyè foto a, yon mo an ekri ak men manman l:",
+          "«Padone m, pitit mwen. Padone m pou tout sa mwen kache.»"
+        ]
+      },
+      {
+        num: 2, titre: "Manti Ki Vye",
+        contenu: [
+          "Thierry te konnen.",
+          "Céliane wè sa nan je l lè li montre l foto a. Pa etosman — jis yon fatig vye, tankou yon moun ki te pote yon sekrè twò lontan.",
+          "\"Konbyen tan ou konnen?\" Céliane mande, vwa l fre tankou glas.",
+          "\"Depi mwen te gen 16 an.\" Thierry chita sou bò kabann nan chanm manman l, la kote yo te grandi. \"Papa ak manman yo te gen yon pitit anvan yo marye. Yon ti fi. Yo ba li pou yon fanmi lòt bò.\"",
+          "Céliane santi chanm nan ap vire. \"Yon sè?\"",
+          "\"Wi.\"",
+          "\"Epi se Isabelle sa a?\"",
+          "\"Mwen pa konnen si se li menm.\" Thierry leve, ale kanpe bò fenèt la. \"Men mwen konnen manman nou te toujou viv ak sa sou kè l.\"",
+          "Céliane gade foto a ankò. Ti bebe a gen menm nen ak li, menm fòm bouch la.",
+          "\"Nou dwe jwenn li,\" Céliane di.",
+          "\"Céliane—\"",
+          "\"Non.\" Vwa l fèm. \"Si nou gen yon sè yon kote, mwen vle konnen l. Manman nou mouri ak sekrè sa a. Li pa dwe mouri ak nou tou.\""
+        ]
+      },
+      {
+        num: 3, titre: "Rankontre Sè",
+        contenu: [
+          "Isabelle te rete nan yon ti kay nan Kafou. Yon fanm sèl, jaden ti flè devan pòt li.",
+          "Lè Céliane frape, li pran yon bon moment anvan pòt la louvri.",
+          "Je vèt Isabelle gade Céliane, epi yon bagay nan figi l chanje — tankou li t ap rekonèt yon bagay li te toujou konnen men li pa t janm wè.",
+          "\"Ou se Céliane,\" li di. Pa yon kesyon.",
+          "\"Wi. Epi ou...\"",
+          "\"Mwen se pitit premye Claudette.\" Isabelle louvri pòt la plis. \"Antre. Mwen t ap tann ou — pa jodi a espesifik, men... mwen t ap tann ou.\"",
+          "Yo chita nan yon ti salon ki santi flè sèk ak kafe. Isabelle montre yo foto — menm foto a, men yon lòt kopi, ki te toujou nan men l.",
+          "\"Manman nou ba l pou mwen,\" Isabelle eksplike, \"pou jou mwen ta vin rele l. Men mwen te pè. Epi kounye a...\"",
+          "\"Kounye a li ale,\" Céliane fini fraz la, je l mouye.",
+          "Isabelle pran men Céliane. Yon jès senp, men li santi tankou yon pònt ki travèse 30 ane mitan.",
+          "\"Li pa ale nèt,\" Isabelle chuchote. \"Li kite nou de. Epi kounye a nou la.\""
+        ]
+      }
+    ]
+  },
+  {
+    id: 2,
+    titre: "Vanjans Ki Gen Gou Myèl",
+    genre: "Suspense & Pasyon 👑",
+    cover: "♟️",
+    bg: "radial-gradient(ellipse at top, #021228 0%, #080608 65%)",
+    accent: "#38bdf8",
+    accentDim: "#38bdf81a",
+    accentBorder: "#38bdf833",
+    textOnAccent: "#031a2e",
+    description: "Li tounen pou pran sa ki pou li — men kè l deside tray li nan chemen...",
+    episodes: [
+      {
+        num: 1, titre: "Retou Wa A",
+        contenu: [
+          "5 ane depo, Markenson te kite Okay ak de men vid, imilye, kraze. Jodi a li tounen — men fwa sa a li gen lajan, pouvwa, ak yon plan.",
+          "Li pa tounen pou ri. Li tounen pou reklame.",
+          "Biwo Directeur Général la te chanje dekorasyon, men estrikti a pa t chanje. Menm bwa sèk, menm fenèt ki bay sou lanmè a. Epi menm nonm — Josué Beaumont — ki te fè l tonbe, ki te vòlè kontra li, ki te kite l sou wout san yon goud.",
+          "Sèkretè a gade Markenson ak je won. \"Ou gen randevou?\"",
+          "\"Non.\" Markenson souriyan. \"Men di Msye Beaumont ke Markenson Pierre-Louis la. Li konnen m.\"",
+          "Twa minit apre, pòt la louvri.",
+          "Josué Beaumont — pi vye, pi gra, men toujou gen ògèy la nan zepòl li — gade Markenson tankou li wè yon fantòm.",
+          "\"Markenson...\" li di.",
+          "\"Bonjou, Msye Beaumont.\" Markenson antre, chita san envitasyon. \"Mwen tande ou ap vann konpayi an. Mwen vini achte l.\""
+        ]
+      },
+      {
+        num: 2, titre: "Dam Nan Jwèt La",
+        contenu: [
+          "Sa Markenson pa t konte sou li — pitit fi Josué a.",
+          "Lydie Beaumont antre nan sal reyinyon an tankou li te fèt pou l posede espas. 28 an, diplòm MIT, je l klere ak entèlijans ak yon kalm ki te fè Markenson santi premye fwa nan 5 an li pa t totalman an kontwòl.",
+          "\"Mwen se nouvo Direktè Finansye a,\" li di, chita bò papa l. \"Tout diskisyon sou vant konpayi a pase nan mwen.\"",
+          "Markenson gade l. Li gade l. \"Depi ki lè?\"",
+          "\"Depi jodi a.\" Yon ti souris.",
+          "Josué parèt ensèten, men li pa kontredikl.",
+          "Markenson reyalize — jwèt la te chanje. Li te vini pou kraze Josué. Men Lydie... Lydie te yon varyab li pa t prevwa.",
+          "\"Tou bien,\" Markenson reponn, leve. \"Mwen ta renmen wè chif yo. Tout chif yo. Mwen ba ou jiska vandredi.\"",
+          "Lè li soti, li tande vwa Lydie dèyè do l:",
+          "\"Li pa gen lide sa l antre ladan l, Papa.\"",
+          "Markenson souriyan pou pwòp tèt lui. Ou gen rezon, madam. Mwen pa gen lide. Men kounye a mwen enteresan."
+        ]
+      },
+      {
+        num: 3, titre: "Lè Kè Tray Plan",
+        contenu: [
+          "Lydie renmèt dosye yo jedi swa — 11è aswè, mesaj san bonjou ni orevwa, jis yon fichye PDF ak yon ti mo: «Chif ou mande yo.»",
+          "Markenson etidye yo pandan lannuit. Lydie te travay — chif yo te pwòp, transparan, onèt. Twò onèt.",
+          "Li rele l nan maten.",
+          "\"Kote ou jwenn dosye Pwojè Nòdwès la?\" li mande. \"Sa manke nan sa ou voye m yo.\"",
+          "Yon silans kout. \"Sa ou konnen sou Pwojè Nòdwès?\"",
+          "\"Ase pou konnen se sa ki te kòze tout pwoblèm 5 ane de sa. Ase pou konnen papa w te kache l.\"",
+          "Yon lòt silans, pi long.",
+          "\"Kafé Kalinda. Demen. 8è.\" Lydie di, epi li koupe.",
+          "Markenson poze telefòn lan. Plan vanjans la te klè nan tèt li pandan 5 ane. Men kounye a, pou premye fwa, li pa t sèten li vle l toujou fini menm jan an.",
+          "Paske Lydie Beaumont — si li te kache dosye sa a, si li te konnen papa l te fè mal — li pa t sou bò papa l.",
+          "Li te sou bò verite a.",
+          "Epi sa chanje tout bagay."
+        ]
+      }
+    ]
+  }
+];
+
+let currentStory = null;
+let currentEp = null;
+
+function show(id) {
+  ['home','story-view','episode-view'].forEach(x => document.getElementById(x).style.display = 'none');
+  document.getElementById(id).style.display = 'block';
+  window.scrollTo(0,0);
+}
+
+// ── Build home cards ──
+const wrap = document.getElementById('cards-wrap');
+DATA.forEach(s => {
+  const card = document.createElement('button');
+  card.className = 'story-card anim';
+  card.style.background = s.bg;
+  card.style.borderColor = s.accentBorder;
+  card.innerHTML = `
+    <div class="card-emoji-bg">${s.cover}</div>
+    <span class="card-genre" style="color:${s.accent};border-color:${s.accentBorder};background:${s.accentDim}">${s.genre}</span>
+    <div class="card-title">${s.titre}</div>
+    <div class="card-desc">${s.description}</div>
+    <span class="card-btn" style="background:${s.accent};color:${s.textOnAccent}">Kòmanse Li →</span>
+    <span class="card-ep-count">${s.episodes.length} episòd</span>
+  `;
+  card.addEventListener('click', () => openStory(s.id));
+  card.addEventListener('mouseenter', () => card.style.borderColor = s.accent);
+  card.addEventListener('mouseleave', () => card.style.borderColor = s.accentBorder);
+  wrap.appendChild(card);
+});
+
+function openStory(id) {
+  currentStory = id;
+  const s = DATA[id];
+
+  // Hero
+  const hero = document.getElementById('story-hero');
+  hero.style.background = s.bg;
+  hero.innerHTML = `
+    <button class="back-btn anim" style="color:${s.accent};border-color:${s.accentBorder}" onclick="show('home')">← Retounen</button>
+    <div class="story-cover-emoji">${s.cover}</div>
+    <span class="story-genre-tag" style="color:${s.accent};border-color:${s.accentBorder};background:${s.accentDim}">${s.genre}</span>
+    <h1 class="story-main-title">${s.titre}</h1>
+    <p class="story-main-desc">${s.description}</p>
+  `;
+
+  // Episode list
+  const epWrap = document.getElementById('ep-list-wrap');
+  epWrap.innerHTML = `<div class="ep-list-label" style="color:${s.accent}">EPISÒD YO</div>`;
+  s.episodes.forEach((ep, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'ep-card anim';
+    btn.style.borderColor = s.accentBorder;
+    btn.style.background = s.accentDim;
+    btn.innerHTML = `
+      <div class="ep-num" style="color:${s.accent}">EPISÒD ${ep.num}</div>
+      <div class="ep-title">${ep.titre}</div>
+      <div class="ep-cta">Li kounye a →</div>
+    `;
+    btn.addEventListener('click', () => openEpisode(id, i));
+    btn.addEventListener('mouseenter', () => btn.style.background = s.accent + '2a');
+    btn.addEventListener('mouseleave', () => btn.style.background = s.accentDim);
+    epWrap.appendChild(btn);
+  });
+
+  show('story-view');
+}
+
+function openEpisode(storyId, epIndex) {
+  currentStory = storyId;
+  currentEp = epIndex;
+  const s = DATA[storyId];
+  const ep = s.episodes[epIndex];
+
+  // Top bar
+  document.getElementById('episode-view').style.background = s.bg;
+  const topbar = document.getElementById('ep-topbar');
+  topbar.style.background = s.bg + 'cc';
+  topbar.innerHTML = `
+    <button class="back-btn" style="color:${s.accent};border-color:${s.accentBorder};position:static" onclick="openStory(${storyId})">← Episòd yo</button>
+    <div class="ep-topbar-info" style="color:${s.accent}">${s.titre} · Episòd ${ep.num}</div>
+  `;
+
+  // Content
+  const cw = document.getElementById('ep-content-wrap');
+  const parasHTML = ep.contenu.map(p => {
+    const formatted = p.replace(/«(.+?)»/g, '<em style="color:'+s.accent+'">«$1»</em>');
+    return `<p class="ep-para" style="color:${p.startsWith('"') || p.startsWith('«') ? '#d4c9b8' : '#e8ddd0'}">${formatted}</p>`;
+  }).join('');
+
+  let navHTML = '<div class="ep-nav">';
+  if (epIndex > 0) {
+    navHTML += `<button class="ep-nav-btn" style="color:${s.accent};border-color:${s.accentBorder};background:transparent" onclick="openEpisode(${storyId},${epIndex-1})">← Episòd ${ep.num - 1}</button>`;
+  }
+  if (epIndex < s.episodes.length - 1) {
+    navHTML += `<button class="ep-nav-btn" style="background:${s.accent};color:${s.textOnAccent};border-color:transparent" onclick="openEpisode(${storyId},${epIndex+1})">Episòd ${ep.num + 1} →</button>`;
+  }
+  navHTML += '</div>';
+
+  const endNote = epIndex === s.episodes.length - 1
+    ? `<div class="ep-end-note" style="color:${s.accent}">✨ Rete tann pwochen episòd la...</div>`
+    : '';
+
+  cw.innerHTML = `
+    <div class="ep-label anim" style="color:${s.accent}">EPISÒD ${ep.num}</div>
+    <h1 class="ep-heading anim">${ep.titre}</h1>
+    <div class="ep-text-box anim" style="border-color:${s.accentBorder};background:${s.accentDim}">
+      ${parasHTML}
+    </div>
+    ${navHTML}
+    ${endNote}
+  `;
+
+  show('episode-view');
+}
+</script>
+</body>
+</html>
